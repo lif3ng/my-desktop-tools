@@ -1,7 +1,8 @@
 <template>
   <div>
     <div>App.vue</div>
-    <div>{{ $route.path }}{{ $route.name }}</div>
+    <router-link to="/" v-if="$route.name !== 'home'">back</router-link>
+    <div>router path:{{ $route.path }} router name:{{ $route.name }}</div>
     <router-view />
   </div>
 </template>
