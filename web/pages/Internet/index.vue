@@ -1,6 +1,6 @@
 <template>
   <div>
-    <proxy-area />
+    <proxy-area v-if="os_platform === 'win32'" />
     <dns-area />
     <interface-area />
   </div>
