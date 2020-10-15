@@ -16,14 +16,18 @@ export default {
   },
   mounted() {
     ipcRenderer.invoke("interface-get").then((interfaceObj) => {
-      console.log(interfaceObj);
-      const result = Object.entries(interfaceObj).map(
-        ([name, [_v6, { address, netmask }]]) => ({
-          name,
-          address,
-          netmask,
+      const result = Object.entries(interfaceObj)
+        .map(([name, list]) => {
+          const v4List = list.filter(
+            ({ address, netmask, family, internal }) =>
+              family === "IPv4" && !internal
+          );
+          return {
+            name,
+            ...(v4List.length ? v4List[0] : null),
+          };
         })
-      );
+        .filter(({ address }) => address);
       this.interfaceList = result;
     });
   },
