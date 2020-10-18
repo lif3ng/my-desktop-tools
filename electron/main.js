@@ -34,6 +34,7 @@ module.exports = (url) => {
     });
     win.loadURL(url);
     win.webContents.openDevTools();
+    session.defaultSession.on("will-download", willDownloadHandler);
   });
 };
 
@@ -55,4 +56,3 @@ const willDownloadHandler = (event, item, webContents) => {
     }
   });
 };
-session.defaultSession.on("will-download", willDownloadHandler);

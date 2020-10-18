@@ -23,9 +23,6 @@
   </div>
 </template>
 <script>
-handleGoogleTranslateRes = (e, { sentences: [{ trans }] }) => {
-  this.trans = trans;
-};
 export default {
   data() {
     return {
@@ -39,11 +36,14 @@ export default {
   mounted() {
     console.log(this);
     this.timer = setInterval(this.refreshClipboard, 1000);
-    ipcRenderer.on("translate-result", handleGoogleTranslateRes);
+    ipcRenderer.on("translate-result", this.handleGoogleTranslateRes);
   },
   beforeDestroy() {
     clearInterval(this.timer);
-    ipcRenderer.removeListener("translate-result", handleGoogleTranslateRes);
+    ipcRenderer.removeListener(
+      "translate-result",
+      this.handleGoogleTranslateRes
+    );
   },
   watch: {
     "board.text": {
@@ -56,6 +56,9 @@ export default {
     },
   },
   methods: {
+    handleGoogleTranslateRes(e, { sentences: [{ trans }] }) {
+      this.trans = trans;
+    },
     refreshClipboard() {
       let type;
       const text = clipboard.readText();
