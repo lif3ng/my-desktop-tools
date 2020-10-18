@@ -19,3 +19,15 @@ ipcMain.handle("translate", ({ sender }, text) => {
     )}`
   );
 });
+ipcMain.handle("setting-get", () => {
+  console.log(app.getPath("userData"));
+  const configPath = path.join(
+    app.getPath("userData"),
+    "my-desktop-tools-config.json"
+  );
+  try {
+    console.log(fs.stat(configPath));
+  } catch (e) {
+    fs.writeFileSync(configPath, "{}");
+  }
+});
