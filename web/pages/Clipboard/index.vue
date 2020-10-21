@@ -13,30 +13,49 @@
         {{ board.text }}
       </template>
       <template v-if="board.text">
-        <nq-button @click="handleTranslate" v-if="!trans">翻译</nq-button>
+        <nq-button
+          @click="handleTranslate"
+          v-if="youdaoResData.length === 0 && googleResData.length === 0"
+          >翻译</nq-button
+        >
         <nq-button @click="handleOpenGoolgle">google trans</nq-button>
         <nq-button @click="handleOpenYoudao">youdao trans</nq-button>
-        <div v-if="trans">google:{{ trans }}</div>
-        <div v-if="transYoudao">youdao:{{ transYoudao }}</div>
+        <div v-if="googleResData.length">
+          google:
+          <trans-res-view :type="googleShowType" :data="googleResData" />
+          <button @click="toggleShowType('google')">
+            {{ googleShowType === "all" ? "逐句" : "完整" }}
+          </button>
+        </div>
+        <div v-if="youdaoResData.length">
+          youdao:
+          <trans-res-view :type="youdaoShowType" :data="youdaoResData" />
+          <button @click="toggleShowType('youdao')">
+            {{ youdaoShowType === "all" ? "逐句" : "完整" }}
+          </button>
+        </div>
       </template>
     </fieldset>
   </div>
 </template>
 <script>
+import TransResView from "./TransResView";
 export default {
+  components: { TransResView },
   data() {
     return {
       timer: null,
       board: {},
       history: [],
-      trans: "",
-      transYoudao: "",
+      googleResData: [],
+      youdaoResData: [],
+      googleShowType: "all",
+      youdaoShowType: "all",
     };
   },
   mounted() {
     console.log(this);
     this.timer = setInterval(this.refreshClipboard, 1000);
-    ipcRenderer.on("translate-result", this.handleGoogleTranslateRes);
   },
   beforeDestroy() {
     clearInterval(this.timer);
@@ -50,14 +69,15 @@ export default {
       deep: true,
       handler(x, y) {
         console.log(x, y);
-        this.trans = "";
-        this.transYoudao = "";
+        this.googleResData = [];
+        this.youdaoResData = [];
       },
     },
   },
   methods: {
-    handleGoogleTranslateRes(e, { sentences: [{ trans }] }) {
-      this.trans = trans;
+    handleGoogleTranslateRes(e, { sentences }) {
+      console.log("google", { sentences });
+      this.trans = sentences.map(({ trans }) => trans).join(" ");
     },
     refreshClipboard() {
       let type;
@@ -101,6 +121,9 @@ export default {
         `http://dict.youdao.com/w/eng/${encodeURIComponent(this.board.text)}`
       );
     },
+    toggleShowType(name) {
+      this[`${name}ShowType`] = this[`${name}ShowType`] === "all" ? "" : "all";
+    },
     handleTranslate() {
       fetch(
         `http://fanyi.youdao.com/translate?&doctype=json&type=AUTO&i=${encodeURIComponent(
@@ -108,10 +131,34 @@ export default {
         )}`
       )
         .then((r) => r.json())
-        .then(({ translateResult: [[{ tgt }]] }) => {
-          this.transYoudao = tgt;
+        .then(({ translateResult, translateResult: [[{ tgt }]] }) => {
+          console.log("youdao", translateResult);
+          this.youdaoResData = translateResult.reduce((arr, list) => {
+            console.log(arr, list);
+            arr.push(
+              ...list
+                .map(({ src, tgt }) => ({
+                  origin: src,
+                  target: tgt,
+                }))
+                .filter(({ origin }) => origin)
+            );
+            return arr;
+          }, []);
         });
-      ipcRenderer.invoke("translate", this.board.text);
+
+      fetch(
+        `http://translate.google.cn/translate_a/single?client=gtx&dt=t&dj=1&ie=UTF-8&sl=auto&tl=zh-CN&q=${encodeURIComponent(
+          this.board.text
+        )}`
+      )
+        .then((r) => r.json())
+        .then(({ sentences }) => {
+          this.googleResData = sentences.map(({ orig, trans }) => ({
+            origin: orig,
+            target: trans,
+          }));
+        });
     },
   },
 };

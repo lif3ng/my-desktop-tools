@@ -12,13 +12,6 @@ ipcMain.handle("internet-info-set", async (e, data) => {
 });
 ipcMain.handle("dns-get", () => dns.getServers());
 ipcMain.handle("interface-get", () => os.networkInterfaces());
-ipcMain.handle("translate", ({ sender }, text) => {
-  sender.downloadURL(
-    `http://translate.google.cn/translate_a/single?client=gtx&dt=t&dj=1&ie=UTF-8&sl=auto&tl=zh-CN&q=${encodeURIComponent(
-      text
-    )}`
-  );
-});
 ipcMain.handle("setting-get", () => {
   console.log(app.getPath("userData"));
   const configPath = path.join(
