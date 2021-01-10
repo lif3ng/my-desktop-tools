@@ -10,6 +10,7 @@ app.whenReady().then(() => {
   win = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true,
+      enableRemoteModule: true,
       webSecurity: false,
       preload: path.join(__dirname, "preload.js"),
     },

@@ -3,6 +3,7 @@
     <router-link to="/internet">网络</router-link>
     <router-link to="/clipboard">剪贴板</router-link>
     <router-link to="/setting">设置</router-link>
+    <router-link to="/editor">编辑器</router-link>
   </div>
 </template>
 <script>
