@@ -1,6 +1,6 @@
 const { app, BrowserWindow, session } = require("electron");
 const path = require("path");
-require("./ipcHander");
+require("./ipcHandler");
 
 let win;
 

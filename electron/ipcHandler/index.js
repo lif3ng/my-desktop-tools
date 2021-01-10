@@ -3,7 +3,8 @@ const path = require("path");
 const fs = require("fs");
 const os = require("os");
 const dns = require("dns");
-const { getInternetValues, setInternetInfo } = require("./handlers/internet");
+const { getInternetValues, setInternetInfo } = require("../handlers/internet");
+const dirLoadHandler = require("../handlers/dirLoad");
 ipcMain.handle("internet-info", async () => {
   return await getInternetValues();
 });
@@ -23,4 +24,7 @@ ipcMain.handle("setting-get", () => {
   } catch (e) {
     fs.writeFileSync(configPath, "{}");
   }
+});
+ipcMain.handle("dir-load", (e, dir) => {
+  return dirLoadHandler(dir);
 });
