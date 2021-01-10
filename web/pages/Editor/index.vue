@@ -2,12 +2,17 @@
   <div>
     editor<br />{{ dir }}
     <nq-button @click="openDir">打开目录</nq-button>
+    <div>
+      {{ pgData }} <nq-button @click="pgVisible = true">创建demo</nq-button>
+      选择一个md文档
+      <html-playground v-if="pgVisible" @save="handleDemoSave" />
+    </div>
   </div>
 </template>
 <script>
 export default {
   data() {
-    return { dir: {} };
+    return { dir: {}, pgVisible: false };
   },
   mounted() {
     /**
@@ -23,6 +28,11 @@ export default {
     //   }
     // }
   },
+  computed: {
+    pgData() {
+      return this.dir["page-playground"];
+    },
+  },
   methods: {
     openDir() {
       const { dialog } = remote;
@@ -37,6 +47,9 @@ export default {
           else this.dir = data;
         });
       }
+    },
+    handleDemoSave(...args) {
+      return console.log(args);
     },
   },
 };
