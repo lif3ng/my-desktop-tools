@@ -28,3 +28,9 @@ ipcMain.handle("setting-get", () => {
 ipcMain.handle("dir-load", (e, dir) => {
   return dirLoadHandler(dir);
 });
+ipcMain.handle("dir-file-load", (e, dirs) => {
+  console.log({ dirs });
+  const dir = path.join(...dirs);
+  const files = fs.readdirSync(dir, { withFileTypes: true });
+  return files.map((f) => `${f.name}${f.isDirectory() ? "/" : ""}`);
+});
