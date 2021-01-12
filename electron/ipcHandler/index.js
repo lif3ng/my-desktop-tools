@@ -5,6 +5,7 @@ const os = require("os");
 const dns = require("dns");
 const { getInternetValues, setInternetInfo } = require("../handlers/internet");
 const dirLoadHandler = require("../handlers/dirLoad");
+const { dirCreate, fileCreate, demoSave } = require("../handlers/fileCreate");
 ipcMain.handle("internet-info", async () => {
   return await getInternetValues();
 });
@@ -33,4 +34,13 @@ ipcMain.handle("dir-file-load", (e, dirs) => {
   const dir = path.join(...dirs);
   const files = fs.readdirSync(dir, { withFileTypes: true });
   return files.map((f) => `${f.name}${f.isDirectory() ? "/" : ""}`);
+});
+ipcMain.handle("dir-create", (e, dirs) => {
+  dirCreate(dirs);
+});
+ipcMain.handle("file-create", (e, dirs) => {
+  return fileCreate(dirs);
+});
+ipcMain.handle("demo-save", (e, dirs, data) => {
+  return demoSave(dirs, data);
 });
