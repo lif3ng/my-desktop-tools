@@ -216,7 +216,7 @@ export default {
             this.dir.dir,
             this.pgData.demoDir,
             this.fileDir,
-            `${this.fileName.replace(/.md$/, "")}`,
+            `${this.fileName.replace(/\.md$/, "")}`,
             `${fileName}.json`,
           ],
           {
@@ -225,7 +225,16 @@ export default {
           }
         )
         .then(() => {
-          this.$message(`${fileName} 保存成功`);
+          const Mustache = require("mustache");
+          const copyContent = this.pgData.copyContentTpl
+            ? Mustache.render(this.pgData.copyContentTpl, { key: fileName })
+            : "";
+          if (copyContent) {
+            clipboard.writeText(copyContent);
+          }
+          this.$message(
+            `保存成功 ${copyContent}${copyContent && " 已复制到剪贴板"}`
+          );
           this.demoDetailDialogVisible = false;
         });
     },
