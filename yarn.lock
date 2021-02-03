@@ -5958,10 +5958,10 @@ lezer@^0.13.0:
   dependencies:
     lezer-tree "^0.13.0"
 
-lif3ng-console-vue-component@^0.1.91:
-  version "0.1.91"
-  resolved "https://registry.npm.taobao.org/lif3ng-console-vue-component/download/lif3ng-console-vue-component-0.1.91.tgz#d8797350d0c82cf0efae7123222ed85cd9402056"
-  integrity sha1-2HlzUNDILPDvrnEjIi7YXNlAIFY=
+lif3ng-console-vue-component@^0.1.95:
+  version "0.1.95"
+  resolved "https://registry.npm.taobao.org/lif3ng-console-vue-component/download/lif3ng-console-vue-component-0.1.95.tgz#dc8de2c0d34d6366c45351a3b3c065f4f215394e"
+  integrity sha1-3I3iwNNNY2bEU1Gjs8Bl9PIVOU4=
   dependencies:
     async-validator "^3.2.2"
     clipboard "^2.0.4"
@@ -6928,10 +6928,10 @@ p-try@^2.0.0:
   resolved "https://registry.npm.taobao.org/p-try/download/p-try-2.2.0.tgz#cb2868540e313d61de58fafbe35ce9004d5540e6"
   integrity sha1-yyhoVA4xPWHeWPr741zpAE1VQOY=
 
-page-playground@^0.1.11:
-  version "0.1.11"
-  resolved "https://registry.npm.taobao.org/page-playground/download/page-playground-0.1.11.tgz#f59d89a9882eca1670343227328882f75e1eaa29"
-  integrity sha1-9Z2JqYguyhZwNDInMoiC914eqik=
+page-playground@^0.1.15:
+  version "0.1.15"
+  resolved "https://registry.npm.taobao.org/page-playground/download/page-playground-0.1.15.tgz#5286c40dd0dc9bcd3604b5995c06f66b493a9a29"
+  integrity sha1-UobEDdDcm802BLWZXAb2a0k6mik=
   dependencies:
     "@codemirror/basic-setup" "^0.17.1"
     "@codemirror/lang-css" "^0.17.1"

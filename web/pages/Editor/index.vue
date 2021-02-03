@@ -26,7 +26,17 @@
       <nq-button @click="handleDirCreate">创建目录</nq-button>
     </div>
     <nq-button @click="pgVisible = true">创建demo</nq-button>
-    <html-playground v-if="pgVisible" @save="handleDemoSave" />
+    <template v-if="pgVisible">
+      值比较<nq-switch v-model="isCssValueList" />
+      <html-css-comparison-table
+        v-if="isCssValueList"
+        edit
+        cssTpl=""
+        :cssValueList="[]"
+        @save="handleDemoSave"
+      />
+      <html-playground v-else @save="handleDemoSave" />
+    </template>
     <demo-detail-dialog
       v-if="demoDetailDialogVisible"
       @close="demoDetailDialogVisible = false"
@@ -49,6 +59,7 @@ export default {
       fileDir: "",
       fileName: "",
       fileDataList: [],
+      isCssValueList: false,
     };
   },
   mounted() {
