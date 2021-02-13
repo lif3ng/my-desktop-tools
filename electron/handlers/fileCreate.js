@@ -14,6 +14,16 @@ exports.dirCreate = (dirs) => {
   console.log({ fullPath });
 };
 
+exports.dirLs = (dirs) => {
+  const dir = path.join(...dirs);
+  try {
+    return fs.readdirSync(dir);
+  } catch (e) {
+    console.log("err", e.message);
+  }
+  return [];
+};
+
 exports.demoSave = (dirs, data) => {
   const fileName = dirs.pop();
   const fullPath = path.join(...dirs);

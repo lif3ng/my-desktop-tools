@@ -25,6 +25,7 @@
       <nq-button @click="handleMdFileCreate">创建md文件</nq-button>
       <nq-button @click="handleDirCreate">创建目录</nq-button>
     </div>
+    <demo-list v-if="demoDirs.length" :dirs="demoDirs" />
     <nq-button @click="pgVisible = true">创建demo</nq-button>
     <template v-if="pgVisible">
       值比较<nq-switch v-model="isCssValueList" />
@@ -46,9 +47,11 @@
 </template>
 <script>
 import DemoDetailDialog from "./DemoDetailDialog";
+import DemoList from "./DemoList";
 export default {
   components: {
     DemoDetailDialog,
+    DemoList,
   },
   data() {
     return {
@@ -72,6 +75,19 @@ export default {
   computed: {
     pgData() {
       return this.dir["page-playground"];
+    },
+    demoDirs() {
+      return this.fileName
+        ? [
+            this.dir.dir,
+            this.pgData.demoDir,
+            this.fileDir,
+            `${this.fileName.replace(/\.md$/, "")}`,
+          ]
+        : [];
+    },
+    demoPath() {
+      return this.pgData ? `${this.dir.dir}/${this.pgData.demoDir}` : "";
     },
   },
   methods: {
@@ -221,20 +237,10 @@ export default {
       const { fileName, ...otherArgs } = data;
       // todo
       ipcRenderer
-        .invoke(
-          "demo-save",
-          [
-            this.dir.dir,
-            this.pgData.demoDir,
-            this.fileDir,
-            `${this.fileName.replace(/\.md$/, "")}`,
-            `${fileName}.json`,
-          ],
-          {
-            ...this.demoData,
-            ...otherArgs,
-          }
-        )
+        .invoke("demo-save", [...this.demoDirs, `${fileName}.json`], {
+          ...this.demoData,
+          ...otherArgs,
+        })
         .then(() => {
           const Mustache = require("mustache");
           const copyContent = this.pgData.copyContentTpl
