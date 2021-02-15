@@ -7,6 +7,7 @@ const { getInternetValues, setInternetInfo } = require("../handlers/internet");
 const dirLoadHandler = require("../handlers/dirLoad");
 const {
   dirCreate,
+  demoRead,
   fileCreate,
   demoSave,
   dirLs,
@@ -52,4 +53,7 @@ ipcMain.handle("file-list", (e, dirs) => {
 });
 ipcMain.handle("demo-save", (e, dirs, data) => {
   return demoSave(dirs, data);
+});
+ipcMain.handle("demo-read", (e, dirs) => {
+  return demoRead(dirs);
 });

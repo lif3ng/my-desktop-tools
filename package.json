@@ -18,7 +18,7 @@
     "jsonc-parser": "^3.0.0",
     "lif3ng-console-vue-component": "^0.1.95",
     "mustache": "^4.1.0",
-    "page-playground": "^0.1.15",
+    "page-playground": "^0.1.17",
     "regedit": "^3.0.3",
     "vue": "^2.6.12",
     "vue-router": "^3.4.6"

@@ -1,6 +1,13 @@
 <template>
   <div>
-    <div v-for="file in demos" :key="file">{{ file }}</div>
+    <div
+      class="demo-item"
+      v-for="file in demos"
+      @click="$emit('demo-select', file)"
+      :key="file"
+    >
+      {{ file }}
+    </div>
   </div>
 </template>
 
@@ -25,4 +32,12 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped lang="stylus">
+.demo-item {
+  cursor: pointer;
+
+  &:hover {
+    background: #abc;
+  }
+}
+</style>

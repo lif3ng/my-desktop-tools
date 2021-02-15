@@ -6,7 +6,12 @@ exports.fileCreate = (dirs) => {
   fs.writeFileSync(fullPath, "");
   return fullPath;
 };
-
+exports.demoRead = (dirs) => {
+  console.log("demoRead", { dirs });
+  const fullPath = path.join(...dirs);
+  const content = fs.readFileSync(fullPath, "utf-8");
+  return JSON.parse(content);
+};
 exports.dirCreate = (dirs) => {
   console.log({ dirs });
   const fullPath = path.join(...dirs);
