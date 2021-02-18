@@ -4,6 +4,7 @@
     <div>
       {{ fileDir }}{{ fileName }}
       <input
+        class="border-0 bg-red-300"
         v-if="!fileName"
         @input="handleFileInputInput"
         @change="handleFileInputChange"
@@ -19,10 +20,10 @@
         </option>
       </datalist>
       <nq-button v-if="fileDir || fileName" @click="handleDirBack">
-        返回
+        <IconToLeft />
       </nq-button>
       <nq-button @click="handleMdFileCreate">创建md文件</nq-button>
-      <nq-button @click="handleDirCreate">创建目录</nq-button>
+      <nq-button @click="handleDirCreate"><IconFolderPlus /></nq-button>
     </div>
     <demo-list
       v-if="demoDirs.length"
@@ -54,10 +55,18 @@
 <script>
 import DemoDetailDialog from "./DemoDetailDialog";
 import DemoList from "./DemoList";
+import {
+  FolderPlus as IconFolderPlus,
+  ToLeft as IconToLeft,
+} from "@icon-park/vue";
+
 export default {
   components: {
     DemoDetailDialog,
     DemoList,
+
+    IconFolderPlus,
+    IconToLeft,
   },
   props: ["baseDir", "data"],
   data() {

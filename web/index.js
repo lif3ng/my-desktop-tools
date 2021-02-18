@@ -3,6 +3,8 @@ import router from "./router";
 import Vue from "vue";
 import playground from "page-playground";
 import "page-playground/dist/plugin.css";
+import "@icon-park/vue/styles/index.css";
+import "./tailwind.css";
 import lib from "lif3ng-console-vue-component";
 import "lif3ng-console-vue-component/lib/lib.css";
 Vue.use(lib);
