@@ -4,7 +4,7 @@
     <div>
       {{ fileDir }}{{ fileName }}
       <input
-        class="border-0 bg-red-300"
+        class="ml-1 mr-4 px-2 border-none leading-8 focus:outline-none focus:ring focus:border-blue-300"
         v-if="!fileName"
         @input="handleFileInputInput"
         @change="handleFileInputChange"
@@ -25,26 +25,34 @@
       <nq-button @click="handleMdFileCreate">创建md文件</nq-button>
       <nq-button @click="handleDirCreate"><IconFolderPlus /></nq-button>
     </div>
-    <demo-list
-      v-if="demoDirs.length"
-      :dirs="demoDirs"
-      @demo-select="handleDemoSelect"
-    />
+
     <nq-button @click="pgVisible = true">创建demo</nq-button>
-    <template v-if="pgVisible">
-      值比较<nq-switch v-model="isCssValueList" />
-      <html-css-comparison-table
-        v-if="isCssValueList"
-        edit
-        @save="handleDemoSave"
-      />
-      <html-playground
-        v-else
-        @save="handleDemoSave"
-        v-bind="demoFileData"
-        :key="demoKey"
-      />
-    </template>
+
+    <div class="flex">
+      <div class="p-3 border-0 border-r-2 border-black mr-2 border-dashed">
+        <demo-list
+          v-if="demoDirs.length"
+          :dirs="demoDirs"
+          @demo-select="handleDemoSelect"
+        />
+      </div>
+      <div class="flex-1">
+        <template v-if="pgVisible">
+          值比较<nq-switch v-model="isCssValueList" />
+          <html-css-comparison-table
+            v-if="isCssValueList"
+            edit
+            @save="handleDemoSave"
+          />
+          <html-playground
+            v-else
+            @save="handleDemoSave"
+            v-bind="demoFileData"
+            :key="demoKey"
+          />
+        </template>
+      </div>
+    </div>
     <demo-detail-dialog
       v-if="demoDetailDialogVisible"
       @close="demoDetailDialogVisible = false"
