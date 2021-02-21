@@ -22,23 +22,42 @@
       <nq-button v-if="fileDir || fileName" @click="handleDirBack">
         <IconToLeft />
       </nq-button>
-      <nq-button @click="handleMdFileCreate">创建md文件</nq-button>
-      <nq-button @click="handleDirCreate"><IconFolderPlus /></nq-button>
+      <template v-if="!fileName">
+        <nq-button @click="handleDirCreate"><IconFolderPlus /></nq-button>
+        <nq-button @click="handleMdFileCreate"><IconNewFile /></nq-button>
+      </template>
+      <nq-button @click="handleCreateDemo" v-else>
+        <IconNewFile class="mr-2" /> 创建demo
+      </nq-button>
     </div>
 
-    <nq-button @click="pgVisible = true">创建demo</nq-button>
-
     <div class="flex">
-      <div class="p-3 border-0 border-r-2 border-black mr-2 border-dashed">
-        <demo-list
-          v-if="demoDirs.length"
-          :dirs="demoDirs"
-          @demo-select="handleDemoSelect"
+      <div
+        :class="[
+          'relative p-3 border-0 border-r-2 border-black mr-2 border-dashed',
+          { 'text-gray-300': demoCreate },
+        ]"
+        v-if="demoDirs.length"
+      >
+        <div>
+          <IconListCheckbox />
+        </div>
+        <demo-list :dirs="demoDirs" @demo-select="handleDemoSelect" />
+        <div
+          v-if="demoCreate"
+          class="absolute top-0 bottom-0 left-0 right-0 bg-gray-500 bg-opacity-25"
         />
       </div>
       <div class="flex-1">
         <template v-if="pgVisible">
-          值比较<nq-switch v-model="isCssValueList" />
+          <template v-if="demoCreate">
+            值比较<nq-switch v-model="isCssValueList" />
+            <IconClose
+              class="float-right cursor-pointer mr-3"
+              @click="handleDemoClose"
+            />
+          </template>
+          <template v-else> </template>
           <html-css-comparison-table
             v-if="isCssValueList"
             edit
@@ -64,8 +83,11 @@
 import DemoDetailDialog from "./DemoDetailDialog";
 import DemoList from "./DemoList";
 import {
+  Newlybuild as IconNewFile,
   FolderPlus as IconFolderPlus,
   ToLeft as IconToLeft,
+  ListCheckbox as IconListCheckbox,
+  Close as IconClose,
 } from "@icon-park/vue";
 
 export default {
@@ -73,8 +95,11 @@ export default {
     DemoDetailDialog,
     DemoList,
 
+    IconNewFile,
     IconFolderPlus,
     IconToLeft,
+    IconListCheckbox,
+    IconClose,
   },
   props: ["baseDir", "data"],
   data() {
@@ -89,6 +114,7 @@ export default {
       fileName: "",
       fileDataList: [],
       isCssValueList: false,
+      demoCreate: false, // true: create; false: edit
     };
   },
   mounted() {
@@ -115,6 +141,16 @@ export default {
     },
   },
   methods: {
+    handleCreateDemo() {
+      this.demoCreate = true;
+      this.pgVisible = true;
+    },
+    handleDemoClose() {
+      this.$confirm("确定不保存 Demo ?").then(() => {
+        this.demoCreate = false;
+        this.pgVisible = false;
+      });
+    },
     loadFileDataList() {
       ipcRenderer
         .invoke("dir-file-load", [this.baseDir, this.data.docDir, this.fileDir])
