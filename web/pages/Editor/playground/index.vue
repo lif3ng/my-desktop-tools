@@ -291,8 +291,8 @@ export default {
         })
         .then(() => {
           const Mustache = require("mustache");
-          const copyContent = this.pgData.copyContentTpl
-            ? Mustache.render(this.pgData.copyContentTpl, { key: fileName })
+          const copyContent = this.data.copyContentTpl
+            ? Mustache.render(this.data.copyContentTpl, { key: fileName })
             : "";
           if (copyContent) {
             clipboard.writeText(copyContent);
