@@ -34,7 +34,7 @@
     <div class="flex">
       <div
         :class="[
-          'relative p-3 border-0 border-r-2 border-black mr-2 border-dashed',
+          'relative p-3 border-0 border-r-2 border-gray-300 mr-2 border-dashed',
           { 'text-gray-300': demoCreate },
         ]"
         v-if="demoDirs.length"
@@ -60,7 +60,9 @@
           <template v-else> </template>
           <html-css-comparison-table
             v-if="isCssValueList"
+            v-bind="demoFileData"
             edit
+            :key="demoKey"
             @save="handleDemoSave"
           />
           <html-playground
@@ -254,11 +256,16 @@ export default {
           );
         });
     },
+    checkIsCssList(demoData) {
+      const { cssTpl } = demoData;
+      return !!cssTpl;
+    },
     handleDemoSelect(file) {
       console.log({ file });
       const demoData = ipcRenderer
         .invoke("demo-read", [...this.demoDirs, file])
         .then((data) => {
+          this.isCssValueList = this.checkIsCssList(data);
           this.demoFileData = data;
           this.pgVisible = true;
         });
@@ -269,8 +276,8 @@ export default {
       }`;
       ipcRenderer
         .invoke("file-create", [
-          this.dir.dir,
-          this.pgData.docDir,
+          this.baseDir,
+          this.data.docDir,
           this.fileDir,
           fileName,
         ])
