@@ -14,7 +14,9 @@
     "pretty-quick": "^3.0.2",
     "stylus": "^0.54.8",
     "stylus-loader": "3",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat"
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat",
+    "vite": "^2.8.6",
+    "vite-plugin-vue2": "^1.9.3"
   },
   "dependencies": {
     "@icon-park/vue": "^1.3.0",
@@ -30,7 +32,9 @@
     "vue-router": "^3.4.6"
   },
   "scripts": {
-    "start": "node entry.js"
+    "start": "node entry.js",
+    "serve": "vue-cli-service serve web",
+    "vite": "node vite-entry.js"
   },
   "husky": {
     "hooks": {
